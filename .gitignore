@@ -1,0 +1,121 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+
+# Python packaging / build
+build/
+dist/
+eggs/
+*.egg-info/
+.egg
+pip-log.txt
+
+# IDEs / editors
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# C extensions / compiled
+*.so
+*.dylib
+*.dll
+
+# Logs, reports, experiments
+logs/
+log/
+logs_*/
+results/
+outputs/
+experiments/
+runs/
+tensorboard/
+tb_logs/
+*.log
+
+# Model artifacts / checkpoints / weights
+checkpoints/
+checkpoints_*/
+saved_models/
+models/
+*_checkpoint*/
+*.ckpt
+*.pt
+*.pth
+*.pth.tar
+*.pth.gz
+*.h5
+*.hdf5
+*.bin
+*.onnx
+*.pb
+*.tflite
+*.tflite.zip
+
+# Large data / datasets / caches
+data/
+datasets/
+raw_data/
+processed_data/
+*.csv
+*.tsv
+*.parquet
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.lmdb
+*.db
+*.sqlite
+.cache/
+.cache/*
+/.cache
+
+# Framework / tooling caches
+torch_cache/
+torch_models/
+transformers_cache/
+.hf/
+huggingface/
+~/.cache/huggingface
+~/.cache/torch
+
+# Credentials / secrets
+*.env
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+id_rsa
+id_rsa.pub
+secrets.json
+
+
+# Misc
+*.prof
+*.aux
+*.out
+*.class
+
+# Keep 
+!data/.gitkeep
+!models/.gitkeep

@@ -1,0 +1,20 @@
+Training report started: 2025-11-02 02:06:35
+Using device: cuda
+GPU: NVIDIA GeForce RTX 3070 Ti Laptop GPU | Compute Capability: 8.6 | VRAM: 8.0 GB
+Parameters:
+  DATA_ROOT=datasets
+  IMG_SIZE=224  BATCH=64  EPOCHS=2  LR=0.0003
+  num_workers=4  pin_memory=True
+epoch 1/2 train_loss=0.0872 val_loss=0.0522 val_acc=0.9802
+ precision=0.9858 recall=0.9744 f1=0.9801
+confusion_matrix:
+[[2465   35]
+ [  64 2436]]
+epoch 2/2 train_loss=0.0369 val_loss=0.0483 val_acc=0.9800
+ precision=0.9839 recall=0.9760 f1=0.9799
+confusion_matrix:
+[[2460   40]
+ [  60 2440]]
+Best val acc: 0.980
+Wrote submission.csv
+Training report saved to reports\training_20251102_020635.txt
