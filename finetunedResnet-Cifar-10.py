@@ -144,6 +144,48 @@ def main():
     model.load_state_dict(filtered_state_dict, strict=False)
 
     model = model.to(DEVICE)
+    
+    # retrieve test dataset from datasets/cifar-10-batches-py
+    test_ds = CIFAR10(root=DATA_ROOT, train=False, transform=eval_tfms, download=False)
+    # Build test dataset and DataLoader
+    test_dl = DataLoader(test_ds, batch_size=BATCH, shuffle=False, num_workers=num_workers, pin_memory=pin_memory)
+    
+     # Conduct inference on cifar-10 test set
+    model.eval()
+    all_preds = []
+    all_labels = []
+    rows = []
+
+    with torch.inference_mode():
+        for batch_idx, (xb, labels) in enumerate(test_dl):
+            xb = xb.to(DEVICE)
+            labels = labels.to(DEVICE)
+        
+            logits = model(xb)
+            preds = logits.argmax(1)
+        
+            # Collect metrics
+            all_preds.extend(preds.cpu().tolist())
+            all_labels.extend(labels.cpu().tolist())
+        
+            # Compute submission IDs
+            start_idx = batch_idx * BATCH
+            ids = list(range(start_idx, start_idx + len(preds)))
+        
+            # Build rows for CSV
+            rows += [{"id": i, "predicted": p.item()} for i, p in zip(ids, preds)]
+    
+    # showcase testing results with evaluation metrics
+    log("Testing results BEFORE additional training")
+    accuracy = accuracy_score(all_labels, all_preds)
+    precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_preds, average='macro', zero_division=0)
+    cm = confusion_matrix(all_labels, all_preds)
+    log(f"accuracy={accuracy:.4f} precision={precision:.4f} recall={recall:.4f} f1={f1:.4f}")
+    log("confusion_matrix:")
+    log(cm)
+    
+    pd.DataFrame(rows).to_csv("submission-cifar-before-training.csv", index=False)
+    log("Wrote submission-cifar-before-training.csv")
 
     # Part 4: Model training and learning optimization part
     criterion = nn.CrossEntropyLoss()
@@ -236,20 +278,15 @@ def main():
             best_acc = acc
             torch.save(model.state_dict(), best_path)
 
+        log("Additional training on Cifar-10")
         log(f"epoch {epoch+1}/{EPOCHS}")
         log(f"train_loss={avg_train_loss:.4f} val_loss={avg_val_loss:.4f} val_acc={acc:.4f} precision={precision:.4f} recall={recall:.4f} f1={f1:.4f}")
         log("confusion_matrix:")
         log(cm)
             
     log(f"Best val acc: {best_acc:.3f}")
-
-    # test set to build submission-cifar.csv
-    # retrieve test dataset from datasets/cifar-10-batches-py
-    test_ds = CIFAR10(root=DATA_ROOT, train=False, transform=eval_tfms, download=False)
-    # Build test dataset and DataLoader
-    test_dl = DataLoader(test_ds, batch_size=BATCH, shuffle=False, num_workers=num_workers, pin_memory=pin_memory)
-
-    # Load saved weights and run test
+            
+    # Test newly trained model again on cifar-10 test set       
     model.load_state_dict(torch.load(best_path, map_location=DEVICE, weights_only=True))
     model.eval()
     all_preds = []
@@ -276,7 +313,7 @@ def main():
             rows += [{"id": i, "predicted": p.item()} for i, p in zip(ids, preds)]
             
     # showcase testing results with evaluation metrics
-    log("Testing results")
+    log("Testing results AFTER additional training")
     accuracy = accuracy_score(all_labels, all_preds)
     precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_preds, average='macro', zero_division=0)
     cm = confusion_matrix(all_labels, all_preds)
@@ -284,8 +321,8 @@ def main():
     log("confusion_matrix:")
     log(cm)
 
-    pd.DataFrame(rows).to_csv("submission-cifar.csv", index=False)
-    log("Wrote submission-cifar.csv")
+    pd.DataFrame(rows).to_csv("submission-cifar-after-training.csv", index=False)
+    log("Wrote submission-cifar-after-training.csv")
     log(f"Training report saved to {report_path}")
 
 if __name__ == "__main__":
