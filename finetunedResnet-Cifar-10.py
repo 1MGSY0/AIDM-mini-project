@@ -244,7 +244,7 @@ def main():
 
     # test set to build submission-cifar.csv
     # retrieve test dataset from datasets/cifar-10-batches-py
-    test_ds = CIFAR10(root=DATA_ROOT, train=False, transform=train_tfms, download=False)
+    test_ds = CIFAR10(root=DATA_ROOT, train=False, transform=eval_tfms, download=False)
     # Build test dataset and DataLoader
     test_dl = DataLoader(test_ds, batch_size=BATCH, shuffle=False, num_workers=num_workers, pin_memory=pin_memory)
 
