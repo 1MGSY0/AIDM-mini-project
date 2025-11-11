@@ -1,0 +1,85 @@
+Training report started: 2025-11-12 02:06:48
+Using device: cuda
+GPU: NVIDIA GeForce RTX 4050 Laptop GPU | Compute Capability: 8.9 | VRAM: 6.0 GB
+Parameters:
+  DATA_ROOT=datasets
+  IMG_SIZE=224  BATCH=32  EPOCHS=15  LR=0.0003
+  num_workers=4  pin_memory=True
+epoch 1/15
+train_loss=0.1452 val_loss=0.0805 val_acc=0.9630 precision=0.9824 recall=0.9471 f1=0.9644
+confusion_matrix:
+[[462   9]
+ [ 28 501]]
+epoch 2/15
+train_loss=0.0834 val_loss=0.0847 val_acc=0.9640 precision=0.9786 recall=0.9527 f1=0.9655
+confusion_matrix:
+[[460  11]
+ [ 25 504]]
+epoch 3/15
+train_loss=0.0578 val_loss=0.1277 val_acc=0.9460 precision=0.9837 recall=0.9130 f1=0.9471
+confusion_matrix:
+[[463   8]
+ [ 46 483]]
+epoch 4/15
+train_loss=0.0452 val_loss=0.0998 val_acc=0.9660 precision=0.9626 recall=0.9735 f1=0.9680
+confusion_matrix:
+[[451  20]
+ [ 14 515]]
+epoch 5/15
+train_loss=0.0313 val_loss=0.1336 val_acc=0.9500 precision=0.9878 recall=0.9168 f1=0.9510
+confusion_matrix:
+[[465   6]
+ [ 44 485]]
+epoch 6/15
+train_loss=0.0349 val_loss=0.1099 val_acc=0.9530 precision=0.9801 recall=0.9301 f1=0.9544
+confusion_matrix:
+[[461  10]
+ [ 37 492]]
+epoch 7/15
+train_loss=0.0179 val_loss=0.1093 val_acc=0.9600 precision=0.9570 recall=0.9679 f1=0.9624
+confusion_matrix:
+[[448  23]
+ [ 17 512]]
+epoch 8/15
+train_loss=0.0249 val_loss=0.0991 val_acc=0.9670 precision=0.9788 recall=0.9584 f1=0.9685
+confusion_matrix:
+[[460  11]
+ [ 22 507]]
+epoch 9/15
+train_loss=0.0124 val_loss=0.0550 val_acc=0.9790 precision=0.9774 recall=0.9830 f1=0.9802
+confusion_matrix:
+[[459  12]
+ [  9 520]]
+epoch 10/15
+train_loss=0.0091 val_loss=0.0587 val_acc=0.9760 precision=0.9884 recall=0.9660 f1=0.9771
+confusion_matrix:
+[[465   6]
+ [ 18 511]]
+epoch 11/15
+train_loss=0.0061 val_loss=0.0655 val_acc=0.9750 precision=0.9791 recall=0.9735 f1=0.9763
+confusion_matrix:
+[[460  11]
+ [ 14 515]]
+epoch 12/15
+train_loss=0.0040 val_loss=0.0605 val_acc=0.9780 precision=0.9792 recall=0.9792 f1=0.9792
+confusion_matrix:
+[[460  11]
+ [ 11 518]]
+epoch 13/15
+train_loss=0.0051 val_loss=0.0638 val_acc=0.9760 precision=0.9828 recall=0.9716 f1=0.9772
+confusion_matrix:
+[[462   9]
+ [ 15 514]]
+epoch 14/15
+train_loss=0.0046 val_loss=0.0624 val_acc=0.9770 precision=0.9810 recall=0.9754 f1=0.9782
+confusion_matrix:
+[[461  10]
+ [ 13 516]]
+epoch 15/15
+train_loss=0.0024 val_loss=0.0629 val_acc=0.9790 precision=0.9829 recall=0.9773 f1=0.9801
+confusion_matrix:
+[[462   9]
+ [ 12 517]]
+Best val acc: 0.979
+Wrote submission.csv
+Training report saved to reports\training_20251112_020648.txt

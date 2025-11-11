@@ -43,8 +43,8 @@ and consider using gradient accumulation.
 
 DATA_ROOT = "datasets"
 IMG_SIZE = 224
-BATCH = 64
-EPOCHS = 2
+BATCH = 32
+EPOCHS = 15
 LR = 3e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_TRAIN_SAMPLES = 4000  # dataset cap: None to disable
