@@ -1,8 +1,8 @@
 # AIDM-mini-project
 
-Project to test an algorithm to classify whether an image contains either a dog or a cat.
+Project to test an algorithm to classify whether an image contains either a dog or a cat by finetuning Resnet18. Subsequently, further finetuning using the Cifar-10 dataset to classify if an image is an airplane, automobile, bird, cat, deer, dog, frog, horse, ship or truck (total 10 classes).
 
-Data source: https://www.kaggle.com/c/dogs-vs-cats/data
+Data source: https://www.kaggle.com/c/dogs-vs-cats/data, https://www.cs.toronto.edu/~kriz/cifar.html (python ver)
 
 ## Contents
 
@@ -18,6 +18,7 @@ Data source: https://www.kaggle.com/c/dogs-vs-cats/data
 
 This repo includes:
 1. training script (`Resnet-finetune.py`) that trains, validates, and produces a `submission.csv`, along with a timestamped training report under report/.
+2. further training script (`finetunedResnet-Cifar-10.py`) that trains, validates and produces submission-cifar.csv, along with timestamped training report with test results under report/.
 ...
 
 
