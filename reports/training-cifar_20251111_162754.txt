@@ -32,3 +32,18 @@ confusion_matrix:
  [  1   1   0   0   0   0   0   0 105   0]
  [  1   4   0   0   1   0   1   0   4  87]]
 Best val acc: 0.847
+Testing results
+accuracy=0.7736 precision=0.8015 recall=0.7736 f1=0.7744
+confusion_matrix:
+[[782   6   7   6   2   0   5   5 181   6]
+ [ 11 784   2   7   0   0  11   1 125  59]
+ [ 99   0 728  46  26   6  49  10  36   0]
+ [ 16   2  49 779  29  18  51   9  43   4]
+ [ 29   0  52  51 759   8  52  23  26   0]
+ [  7   0  54 303  30 517  42  23  22   2]
+ [  7   0  29  27  10   0 907   0  19   1]
+ [ 30   0  37  54  71  24  12 746  25   1]
+ [ 25   0   0   7   0   0   1   0 966   1]
+ [ 21  35   5  19   0   0   9   3 140 768]]
+Wrote submission-cifar.csv
+Training report saved to reports\training-cifar_20251111_162754.txt
