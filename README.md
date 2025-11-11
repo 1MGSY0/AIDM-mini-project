@@ -70,9 +70,21 @@ AIDM-mini-project/
 
 - Test is a flat folder of images (no labels). By default the code looks for `.jpg` files.
 
+To run `finetunedResnet-Cifar-10.py`, the code expects an additional downloaded Cifar-10 python ver from https://www.cs.toronto.edu/~kriz/cifar.html under the `datasets` folder:
+
+```
+AIDM-mini-project/
+  datasets/
+    cifar-10-batches-py/
+    train/
+    val/
+    test/
+```
+
+
 ## 4) Where to change parameters
 
-Open `Resnet-finetune.py` and look near the top for the key knobs:
+Open `Resnet-finetune.py` or `finetunedResnet-Cifar-10.py` and look near the top for the key knobs:
 
 ```python
 # Resnet-finetune.py
@@ -92,6 +104,8 @@ MAX_VAL_SAMPLES = 1000
 
 ## 5) Run training
 
+For `Resnet-finetune.py`,
+
 ```powershell
 # From the repo root with the venv activated
 python Resnet-finetune.py
@@ -103,9 +117,22 @@ What happens
 - Checkpoint: best model weights (by val accuracy) saved to `best.pt` (state_dict).
 - Inference: runs on the `datasets/test` folder to produce `submission.csv`.
 
+For `finetunedResnet-Cifar-10.py`, it should only be run after successfully running `Resnet-finetune.py`.
+
+```powershell
+# From the repo root with the venv activated
+python finetunedResnet-Cifar-10.py
+```
+What happens
+- Model: Previously finetuned model and best weights from `Resnet-finetune.py` and `best.pt`
+- Training: AdamW + CosineAnnealingLR; AMP used on GPU for speed.
+- Logging: per-epoch metrics printed and saved to a timestamped report file under `reports/`, as well as testing metrics on Cifar-10 test set.
+- Checkpoint: best model weights (by val accuracy) saved to `best-cifar.pt` (state_dict).
+- Inference: runs on the `datasets/cifar-10-batches-py/test` folder to produce `submission-cifar.csv`.
+
 ## 6) Outputs
 
-- Training reports: saved under `reports/` as `training_YYYYMMDD_HHMMSS.txt`.
+- Training reports: saved under `reports/` as `training_YYYYMMDD_HHMMSS.txt`
   - Includes: device/GPU info, parameters, per-epoch `train_loss`, `val_loss`, `val_acc`, and when available precision/recall/F1 and a confusion matrix.
 - Submission file: `submission.csv` at the repo root.
   - Structure (header + rows):
@@ -140,7 +167,7 @@ If CUDA is available, mixed precision is enabled and host→GPU transfers use pi
 
 ## 9) Re-running or customizing
 
-- You can safely re-run `python Resnet-finetune.py`; a new report will be generated each time. The best model weights overwrite `best.pt` when validation accuracy improves.
+- You can safely re-run `python Resnet-finetune.py` or `finetunedResnet-Cifar-10.py`; a new report will be generated each time. The best model weights overwrite `best.pt` when validation accuracy improves. However, you should run `python Resnet-finetune.py` at least once before running `finetunedResnet-Cifar-10.py` for the first time.
 - To add CLI flags (e.g., `--max-train`, `--max-val`, `--epochs`), we can wire `argparse` so teammates can tweak settings without editing the file.
 
 ---
