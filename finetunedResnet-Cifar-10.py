@@ -111,9 +111,10 @@ def main():
 
     # Load and preprocess cifar-10 dataset
     # Retrieve cifar-10 from datasets/cifar-10-batches-py
-    trainval_full = CIFAR10(root=DATA_ROOT, train=True, transform=train_tfms, download=False) # change download to true to download from cloud
+    trainval_full = CIFAR10(root=DATA_ROOT, train=True, transform=None, download=False) # change download to true to download from cloud
     g = torch.Generator().manual_seed(42)  # ensures same split every run
-    train_ds_full, val_ds_full = random_split(trainval_full, [45000, 5000], generator=g)
+    train_ds_full, val_ds_full = random_split(trainval_full, [45000, 5000], generator=g) # create validation set from subset of train set
+    train_ds_full.dataset.transform = train_tfms
     val_ds_full.dataset.transform = eval_tfms
     
     # Limit dataset size, same as in initial finetuning
