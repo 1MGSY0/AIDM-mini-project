@@ -74,25 +74,6 @@ eval_tfms = transforms.Compose([
     transforms.Normalize(mean, std),
 ])
 
-
-class FlatImageFolder(torch.utils.data.Dataset):
-
-    def __init__(self, folder, tfm):
-        files = [f for f in os.listdir(folder) if f.lower().endswith((".jpg"))]
-        def _nat_key(name: str):
-            parts = re.split(r"(\d+)", name)
-            return [int(p) if p.isdigit() else p.lower() for p in parts]
-        files.sort(key=_nat_key)
-        self.paths = [os.path.join(folder, f) for f in files]
-        self.tfm = tfm
-
-    def __len__(self):
-        return len(self.paths)
-
-    def __getitem__(self, i):
-        p = self.paths[i]
-        return self.tfm(Image.open(p).convert("RGB")), os.path.basename(p)
-
 def main():
     # Set up a timestamped training report file and a helper that prints and writes
     os.makedirs("reports", exist_ok=True)
