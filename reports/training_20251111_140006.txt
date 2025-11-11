@@ -1,0 +1,20 @@
+Training report started: 2025-11-11 14:00:06
+Using device: cuda
+GPU: NVIDIA GeForce RTX 4050 Laptop GPU | Compute Capability: 8.9 | VRAM: 6.0 GB
+Parameters:
+  DATA_ROOT=C:\Users\sorui\Desktop\AIDM-mini-project\datasets
+  IMG_SIZE=224  BATCH=64  EPOCHS=2  LR=0.0003
+  num_workers=4  pin_memory=True
+epoch 1/2
+train_loss=0.1213 val_loss=0.0540 val_acc=0.9750 precision=0.9903 recall=0.9622 f1=0.9760
+confusion_matrix:
+[[466   5]
+ [ 20 509]]
+epoch 2/2
+train_loss=0.0433 val_loss=0.0631 val_acc=0.9720 precision=0.9941 recall=0.9527 f1=0.9730
+confusion_matrix:
+[[468   3]
+ [ 25 504]]
+Best val acc: 0.975
+Wrote submission.csv
+Training report saved to reports\training_20251111_140006.txt
