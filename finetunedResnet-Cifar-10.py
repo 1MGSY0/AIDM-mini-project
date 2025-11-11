@@ -294,6 +294,7 @@ def main():
             rows += [{"id": i, "predicted": p.item()} for i, p in zip(ids, preds)]
             
     # showcase testing results with evaluation metrics
+    log("Testing results")
     accuracy = accuracy_score(all_labels, all_preds)
     precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_preds, average='macro', zero_division=0)
     cm = confusion_matrix(all_labels, all_preds)
@@ -301,14 +302,9 @@ def main():
     log("confusion_matrix:")
     log(cm)
 
-    # Ensure submission is deterministically ordered by filename (numeric when possible)
-    rows.sort(key=lambda r: (int(os.path.splitext(r["id"])[0])
-                             if os.path.splitext(r["id"])[0].isdigit()
-                             else r["id"].lower()))
     pd.DataFrame(rows).to_csv("submission-cifar.csv", index=False)
     log("Wrote submission-cifar.csv")
     log(f"Training report saved to {report_path}")
-
 
 if __name__ == "__main__":
     main()
