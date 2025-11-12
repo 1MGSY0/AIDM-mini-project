@@ -13,52 +13,25 @@ from torchvision import datasets, transforms, models
 from PIL import Image
 from sklearn.metrics import precision_recall_fscore_support, confusion_matrix
 
-"""
-Project training hyperparameters
-
-This block defines dataset paths, image size, batch size, number of epochs, learning rate and device selection. 
-These parameters were chosen to suit a typical laptop GPU environment used in the mini-project:
-
-IMG_SIZE = 224: 
-    matches the input size expected by ResNet pretrained on ImageNet 
-    (keeps compatibility with pretrained weights and common image augmentations).
-
-BATCH = 32: 
-    a compromise between throughput and memory use. 
-    For faster iteration on CPU-only machines lower values are necessary.
- 
-EPOCHS = 15: 
-    a modest number for fine-tuning; 
-    long enough to converge for the assignment but short enough to run on limited hardware.
-
-LR = 3e-4: 
-    a conservative learning rate for AdamW when fine-tuning a pretrained network. 
-    It balances stable training with reasonable progress.
-
-Tweak notes: if you have a high-memory GPU you can increase BATCH and/or
-IMG_SIZE for potentially better accuracy; on low-memory devices reduce BATCH
-and consider using gradient accumulation.
-"""
+# Configureation and hyperparameters
 
 DATA_ROOT = "datasets"
 IMG_SIZE = 224
-BATCH = 64
-EPOCHS = 2
+BATCH = 32
+EPOCHS = 25
 LR = 3e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_TRAIN_SAMPLES = 4000  # dataset cap: None to disable
 MAX_VAL_SAMPLES = 1000    # dataset cap: None to disable
 
+# Early stopping configuration
+EARLY_STOP_PATIENCE = 8     # number of epochs with no val_acc improvement before stopping
+EARLY_STOP_MIN_DELTA = 1e-4  # required improvement margin on val_acc to reset patience
+
 mean = [0.485, 0.456, 0.406]; std = [0.229, 0.224, 0.225]
-"""
-Data transforms / augmentations
-- Normalization uses ImageNet mean/std because we're fine-tuning a model
-  pretrained on ImageNet; this keeps input statistics similar to pretraining.
-- For training we use random resized crops, flips and small rotations to
-  increase robustness to scale/orientation variations in a small dataset.
-- For evaluation we use a deterministic resize+center crop to produce
-  consistent inputs for validation and test-time inference.
-"""
+
+#Data transforms / augmentations
+
 train_tfms = transforms.Compose([
     transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),
     transforms.RandomHorizontalFlip(),
@@ -126,6 +99,7 @@ def main():
     log(f"  DATA_ROOT={DATA_ROOT}")
     log(f"  IMG_SIZE={IMG_SIZE}  BATCH={BATCH}  EPOCHS={EPOCHS}  LR={LR}")
     log(f"  num_workers={num_workers}  pin_memory={pin_memory}")
+    log(f"  early_stopping: patience={EARLY_STOP_PATIENCE}, min_delta={EARLY_STOP_MIN_DELTA}")
 
     # Part 1 and 2: Loading and preparing data and Data processing
     train_ds = datasets.ImageFolder(os.path.join(DATA_ROOT, "train"), train_tfms)
@@ -162,6 +136,7 @@ def main():
     scaler = torch.amp.GradScaler() if use_amp else None
 
     best_acc, best_path = 0.0, "best.pt"
+    epochs_no_improve = 0
 
     for epoch in range(EPOCHS):
         model.train()
@@ -239,14 +214,22 @@ def main():
         precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_preds, average='binary')
         cm = confusion_matrix(all_labels, all_preds)
 
-        if acc > best_acc:
+        if acc > (best_acc + EARLY_STOP_MIN_DELTA):
             best_acc = acc
             torch.save(model.state_dict(), best_path)
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
 
         log(f"epoch {epoch+1}/{EPOCHS}")
         log(f"train_loss={avg_train_loss:.4f} val_loss={avg_val_loss:.4f} val_acc={acc:.4f} precision={precision:.4f} recall={recall:.4f} f1={f1:.4f}")
         log("confusion_matrix:")
         log(cm)
+            
+        # Early stopping check
+        if EARLY_STOP_PATIENCE is not None and epochs_no_improve >= EARLY_STOP_PATIENCE:
+            log(f"Early stopping: no val_acc improvement for {epochs_no_improve} epoch(s). Stopping at epoch {epoch+1}.")
+            break
             
     log(f"Best val acc: {best_acc:.3f}")
 

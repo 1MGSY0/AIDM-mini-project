@@ -72,7 +72,7 @@ AIDM-mini-project/
 
 ## 4) Where to change parameters
 
-Open `Resnet-finetune.py` and look near the top for the key knobs:
+Open `Resnet-finetune.py` and and key knobs are at the top:
 
 ```python
 # Resnet-finetune.py
@@ -96,7 +96,7 @@ MAX_VAL_SAMPLES = 1000
 # From the repo root with the venv activated
 python Resnet-finetune.py
 ```
-What happens
+
 - Model: ResNet-18 (ImageNet-pretrained) with final `fc` swapped to 2 classes.
 - Training: AdamW + CosineAnnealingLR; AMP used on GPU for speed.
 - Logging: per-epoch metrics printed and saved to a timestamped report file under `reports/`.
@@ -131,16 +131,9 @@ print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
 
 If CUDA is available, mixed precision is enabled and host→GPU transfers use pinned memory for speed.
 
-## 8) Tips & troubleshooting
 
-- Out-of-memory (GPU): lower `BATCH`, or reduce `IMG_SIZE` (e.g., 160), or turn off heavy augmentations.
-- Slow data loading: increase `num_workers` (2–8), keep `pin_memory=True` on GPU. Consider keeping `persistent_workers=True` for faster epochs.
-- Windows multiprocessing: if you hit worker/pickling issues, set `num_workers=0` for simplicity.
-- Quick smoke test: set `EPOCHS = 1`, and smaller caps like `MAX_TRAIN_SAMPLES = 512`, `MAX_VAL_SAMPLES = 256`.
+## 8) Re-running
 
-## 9) Re-running or customizing
-
-- You can safely re-run `python Resnet-finetune.py`; a new report will be generated each time. The best model weights overwrite `best.pt` when validation accuracy improves.
-- To add CLI flags (e.g., `--max-train`, `--max-val`, `--epochs`), we can wire `argparse` so teammates can tweak settings without editing the file.
+- re-run `python Resnet-finetune.py`; a new report will be generated each time. The best model weights overwrite 
 
 ---

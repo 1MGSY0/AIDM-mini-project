@@ -1,0 +1,135 @@
+Training report started: 2025-11-12 10:17:01
+Using device: cuda
+GPU: NVIDIA GeForce RTX 3070 Ti Laptop GPU | Compute Capability: 8.6 | VRAM: 8.0 GB
+Parameters:
+  DATA_ROOT=datasets
+  IMG_SIZE=224  BATCH=32  EPOCHS=25  LR=0.0003
+  num_workers=4  pin_memory=True
+epoch 1/25
+train_loss=0.1489 val_loss=0.0855 val_acc=0.9590 precision=0.9586 recall=0.9641 f1=0.9614
+confusion_matrix:
+[[449  22]
+ [ 19 510]]
+epoch 2/25
+train_loss=0.0816 val_loss=0.0759 val_acc=0.9680 precision=0.9698 recall=0.9698 f1=0.9698
+confusion_matrix:
+[[455  16]
+ [ 16 513]]
+epoch 3/25
+train_loss=0.0651 val_loss=0.0690 val_acc=0.9680 precision=0.9733 recall=0.9660 f1=0.9696
+confusion_matrix:
+[[457  14]
+ [ 18 511]]
+epoch 4/25
+train_loss=0.0366 val_loss=0.0986 val_acc=0.9660 precision=0.9787 recall=0.9565 f1=0.9675
+confusion_matrix:
+[[460  11]
+ [ 23 506]]
+epoch 5/25
+train_loss=0.0445 val_loss=0.0805 val_acc=0.9710 precision=0.9717 recall=0.9735 f1=0.9726
+confusion_matrix:
+[[456  15]
+ [ 14 515]]
+epoch 6/25
+train_loss=0.0377 val_loss=0.1077 val_acc=0.9540 precision=0.9919 recall=0.9206 f1=0.9549
+confusion_matrix:
+[[467   4]
+ [ 42 487]]
+epoch 7/25
+train_loss=0.0372 val_loss=0.0678 val_acc=0.9730 precision=0.9665 recall=0.9830 f1=0.9747
+confusion_matrix:
+[[453  18]
+ [  9 520]]
+epoch 8/25
+train_loss=0.0297 val_loss=0.0949 val_acc=0.9690 precision=0.9788 recall=0.9622 f1=0.9704
+confusion_matrix:
+[[460  11]
+ [ 20 509]]
+epoch 9/25
+train_loss=0.0210 val_loss=0.0883 val_acc=0.9700 precision=0.9612 recall=0.9830 f1=0.9720
+confusion_matrix:
+[[450  21]
+ [  9 520]]
+epoch 10/25
+train_loss=0.0216 val_loss=0.0879 val_acc=0.9710 precision=0.9789 recall=0.9660 f1=0.9724
+confusion_matrix:
+[[460  11]
+ [ 18 511]]
+epoch 11/25
+train_loss=0.0136 val_loss=0.0853 val_acc=0.9680 precision=0.9844 recall=0.9546 f1=0.9693
+confusion_matrix:
+[[463   8]
+ [ 24 505]]
+epoch 12/25
+train_loss=0.0181 val_loss=0.0832 val_acc=0.9660 precision=0.9806 recall=0.9546 f1=0.9674
+confusion_matrix:
+[[461  10]
+ [ 24 505]]
+epoch 13/25
+train_loss=0.0090 val_loss=0.0520 val_acc=0.9780 precision=0.9810 recall=0.9773 f1=0.9792
+confusion_matrix:
+[[461  10]
+ [ 12 517]]
+epoch 14/25
+train_loss=0.0114 val_loss=0.0674 val_acc=0.9770 precision=0.9774 recall=0.9792 f1=0.9783
+confusion_matrix:
+[[459  12]
+ [ 11 518]]
+epoch 15/25
+train_loss=0.0045 val_loss=0.0552 val_acc=0.9820 precision=0.9830 recall=0.9830 f1=0.9830
+confusion_matrix:
+[[462   9]
+ [  9 520]]
+epoch 16/25
+train_loss=0.0041 val_loss=0.0753 val_acc=0.9730 precision=0.9754 recall=0.9735 f1=0.9745
+confusion_matrix:
+[[458  13]
+ [ 14 515]]
+epoch 17/25
+train_loss=0.0020 val_loss=0.0696 val_acc=0.9750 precision=0.9755 recall=0.9773 f1=0.9764
+confusion_matrix:
+[[458  13]
+ [ 12 517]]
+epoch 18/25
+train_loss=0.0037 val_loss=0.0578 val_acc=0.9790 precision=0.9774 recall=0.9830 f1=0.9802
+confusion_matrix:
+[[459  12]
+ [  9 520]]
+epoch 19/25
+train_loss=0.0021 val_loss=0.0608 val_acc=0.9810 precision=0.9793 recall=0.9849 f1=0.9821
+confusion_matrix:
+[[460  11]
+ [  8 521]]
+epoch 20/25
+train_loss=0.0035 val_loss=0.0715 val_acc=0.9800 precision=0.9757 recall=0.9868 f1=0.9812
+confusion_matrix:
+[[458  13]
+ [  7 522]]
+epoch 21/25
+train_loss=0.0037 val_loss=0.0607 val_acc=0.9800 precision=0.9757 recall=0.9868 f1=0.9812
+confusion_matrix:
+[[458  13]
+ [  7 522]]
+epoch 22/25
+train_loss=0.0010 val_loss=0.0594 val_acc=0.9810 precision=0.9775 recall=0.9868 f1=0.9821
+confusion_matrix:
+[[459  12]
+ [  7 522]]
+epoch 23/25
+train_loss=0.0017 val_loss=0.0612 val_acc=0.9790 precision=0.9757 recall=0.9849 f1=0.9802
+confusion_matrix:
+[[458  13]
+ [  8 521]]
+epoch 24/25
+train_loss=0.0016 val_loss=0.0516 val_acc=0.9800 precision=0.9811 recall=0.9811 f1=0.9811
+confusion_matrix:
+[[461  10]
+ [ 10 519]]
+epoch 25/25
+train_loss=0.0009 val_loss=0.0542 val_acc=0.9810 precision=0.9775 recall=0.9868 f1=0.9821
+confusion_matrix:
+[[459  12]
+ [  7 522]]
+Best val acc: 0.982
+Wrote submission.csv
+Training report saved to reports\training_20251112_101701.txt
