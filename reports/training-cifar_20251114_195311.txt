@@ -1,0 +1,28 @@
+Training report started: 2025-11-14 19:53:11
+Using device: cpu
+Parameters:
+  DATA_ROOT=datasets
+  IMG_SIZE=224  BATCH=32  EPOCHS=15  LR=0.0003
+  num_workers=4  pin_memory=False
+Train class counts BEFORE imbalance:
+  class 0 (airplane): 4512
+  class 1 (automobile): 4488
+  class 2 (bird): 4468
+  class 3 (cat): 4529
+  class 4 (deer): 4529
+  class 5 (dog): 4486
+  class 6 (frog): 4493
+  class 7 (horse): 4500
+  class 8 (ship): 4496
+  class 9 (truck): 4499
+Train class counts AFTER imbalance:
+  class 0 (airplane): 4512
+  class 1 (automobile): 4488
+  class 2 (bird): 893
+  class 3 (cat): 4529
+  class 4 (deer): 905
+  class 5 (dog): 4486
+  class 6 (frog): 898
+  class 7 (horse): 4500
+  class 8 (ship): 4496
+  class 9 (truck): 4499

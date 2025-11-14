@@ -1,0 +1,6 @@
+Training report started: 2025-11-14 19:44:06
+Using device: cpu
+Parameters:
+  DATA_ROOT=datasets
+  IMG_SIZE=224  BATCH=32  EPOCHS=15  LR=0.0003
+  num_workers=4  pin_memory=False

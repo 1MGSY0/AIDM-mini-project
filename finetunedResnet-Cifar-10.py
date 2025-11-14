@@ -111,9 +111,58 @@ def main():
 
     # Load and preprocess cifar-10 dataset
     # Retrieve cifar-10 from datasets/cifar-10-batches-py
-    trainval_full = CIFAR10(root=DATA_ROOT, train=True, transform=None, download=False) # change download to true to download from cloud
+    trainval_full = CIFAR10(root=DATA_ROOT, train=True, transform=None, download=False)  # change download to True to download from cloud
+    class_names = trainval_full.classes  # ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
     g = torch.Generator().manual_seed(42)  # ensures same split every run
-    train_ds_full, val_ds_full = random_split(trainval_full, [45000, 5000], generator=g) # create validation set from subset of train set
+    train_ds_full, val_ds_full = random_split(trainval_full, [45000, 5000], generator=g)  # create validation set from subset of train set
+
+    # ---- MAKE TRAINING SET IMBALANCED ----
+    # Minority classes: bird (2), deer (4), frog (6)
+    minority_classes = [2, 4, 6]
+    reduction_factor = 0.2  # keep only 20% of samples for minority classes
+
+    original_train_indices = train_ds_full.indices  # indices into trainval_full
+    targets = trainval_full.targets
+
+    new_train_indices = []
+    per_class_before = [0] * 10
+    per_class_after = [0] * 10
+
+    # Count original per-class sizes within the training split
+    for idx in original_train_indices:
+        lbl = targets[idx]
+        per_class_before[lbl] += 1
+
+    # Build new (imbalanced) index list
+    for c in range(10):
+        # all indices in the training split that belong to class c
+        class_idx_list = [idx for idx in original_train_indices if targets[idx] == c]
+
+        if c in minority_classes:
+            keep_n = max(1, int(len(class_idx_list) * reduction_factor))
+            # deterministic: take first keep_n to keep it simple and reproducible
+            kept = class_idx_list[:keep_n]
+        else:
+            kept = class_idx_list
+
+        new_train_indices.extend(kept)
+        per_class_after[c] = len(kept)
+
+    # Replace training subset with the imbalanced subset
+    from torch.utils.data import Subset
+    train_ds_full = Subset(trainval_full, new_train_indices)
+
+    # Log distribution before/after
+    log("Train class counts BEFORE imbalance:")
+    for c in range(10):
+        log(f"  class {c} ({class_names[c]}): {per_class_before[c]}")
+
+    log("Train class counts AFTER imbalance:")
+    for c in range(10):
+        log(f"  class {c} ({class_names[c]}): {per_class_after[c]}")
+
+    # Attach transforms
     train_ds_full.dataset.transform = train_tfms
     val_ds_full.dataset.transform = eval_tfms
     
@@ -123,6 +172,25 @@ def main():
                 if MAX_TRAIN_SAMPLES and len(train_ds_full) > MAX_TRAIN_SAMPLES else train_ds_full)
     val_ds = (torch.utils.data.Subset(val_ds_full, torch.randperm(len(val_ds_full))[:MAX_VAL_SAMPLES].tolist())
               if MAX_VAL_SAMPLES and len(val_ds_full) > MAX_VAL_SAMPLES else val_ds_full)
+    
+     # ---- Compute class weights from the (imbalanced) training set ----
+    num_classes = 10
+    label_counts = torch.zeros(num_classes, dtype=torch.long)
+
+    count_loader = DataLoader(train_ds, batch_size=BATCH, shuffle=False, num_workers=0)
+    for _, labels in count_loader:
+        for l in labels:
+            label_counts[l.item()] += 1
+
+    total_samples = int(label_counts.sum().item())
+    class_weights = (total_samples / (num_classes * label_counts.float())).to(DEVICE)
+
+    log(f"Train class counts used for weights: {label_counts.tolist()}")
+    log(f"Train class weights: {class_weights.tolist()}")
+
+    # Part 4: Model training and learning optimization part
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
+    opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
     
     # Use persistent workers and small prefetch to speed up data pipeline when workers > 0
     loader_kwargs = dict(batch_size=BATCH, num_workers=num_workers, pin_memory=pin_memory)
@@ -187,9 +255,6 @@ def main():
     pd.DataFrame(rows).to_csv("submission-cifar-before-training.csv", index=False)
     log("Wrote submission-cifar-before-training.csv")
 
-    # Part 4: Model training and learning optimization part
-    criterion = nn.CrossEntropyLoss()
-    opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS)
 
     # Mixed precision setup: enables faster,smaller training on GPU
